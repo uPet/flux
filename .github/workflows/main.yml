@@ -23,13 +23,12 @@ jobs:
       - name: Docker login
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-        run: echo -n $DOCKER_HUB_TOKEN | docker login --username zlangbert --password-stdin
+        run: echo -n $DOCKER_HUB_TOKEN | docker login --username dboss --password-stdin
 
       - name: Run Buildx
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7 \
-            --tag "zlangbert/flux:latest-multiarch" \
-            --tag "zlangbert/flux:$(git rev-parse --short "$GITHUB_SHA")-multiarch" \
+            --platform linux/amd64,linux/arm64 \
+            --tag "upetco/flux" \
             --file docker/Dockerfile.build . \
             --push
