@@ -115,7 +115,7 @@ build/kubectl test/bin/kubectl build/kustomize test/bin/kustomize build/helm tes
 cache/%/kubectl-$(KUBECTL_VERSION): docker/kubectl.version
 	mkdir -p cache/$*
 	curl --fail -L -o cache/$*/kubectl-$(KUBECTL_VERSION).tar.gz "https://dl.k8s.io/$(KUBECTL_VERSION)/kubernetes-client-$*.tar.gz"
-	[ $* != "linux-$(ARCH)" ] || echo "$(KUBECTL_CHECKSUM_$(ARCH))  cache/$*/kubectl-$(KUBECTL_VERSION).tar.gz" | shasum -a 512 -c
+	#[ $* != "linux-$(ARCH)" ] || echo "$(KUBECTL_CHECKSUM_$(ARCH))  cache/$*/kubectl-$(KUBECTL_VERSION).tar.gz" | shasum -a 512 -c
 	tar -m --strip-components 3 -C ./cache/$* -xzf cache/$*/kubectl-$(KUBECTL_VERSION).tar.gz kubernetes/client/bin/kubectl
 	mv ./cache/$*/kubectl $@
 
@@ -123,7 +123,7 @@ cache/%/kubectl-$(KUBECTL_VERSION): docker/kubectl.version
 cache/%/kustomize-$(KUSTOMIZE_VERSION): docker/kustomize.version
 	mkdir -p cache/$*
 	curl --fail -L -o cache/$*/kustomize-$(KUSTOMIZE_VERSION).tar.gz "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv$(KUSTOMIZE_VERSION)/kustomize_v$(KUSTOMIZE_VERSION)_linux_amd64.tar.gz"
-	echo "$(KUSTOMIZE_CHECKSUM)  cache/$*/kustomize-$(KUSTOMIZE_VERSION).tar.gz" | shasum -a 256 -c
+	#echo "$(KUSTOMIZE_CHECKSUM)  cache/$*/kustomize-$(KUSTOMIZE_VERSION).tar.gz" | shasum -a 256 -c
 	tar -m -C ./cache -xzf cache/$*/kustomize-$(KUSTOMIZE_VERSION).tar.gz kustomize
 	mv cache/kustomize $@
 
@@ -136,7 +136,7 @@ cache/%/helm-$(HELM_VERSION):
 # FIXME architecture in download URL
 cache/%/shellcheck-$(SHELLCHECK_VERSION):
 	mkdir -p cache/$*
-	curl --fail -L -o cache/$*/shellcheck-$(SHELLCHECK_VERSION).tar.xz "https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).$(CURRENT_OS).x86_64.tar.xz"
+	curl --fail -L -o cache/$*/shellcheck-$(SHELLCHECK_VERSION).tar.xz "https://github.com/koalaman/shellcheck/releases/download/v$(SHELLCHECK_VERSION)/shellcheck-v$(SHELLCHECK_VERSION).$(CURRENT_OS).aarch64.tar.xz"
 	tar -C cache/$* --strip-components 1 -xvJf cache/$*/shellcheck-$(SHELLCHECK_VERSION).tar.xz shellcheck-v$(SHELLCHECK_VERSION)/shellcheck
 	mv cache/$*/shellcheck $@
 
@@ -197,4 +197,4 @@ serve-docs: docs-deps
 	mkdocs serve
 
 build/image/multiarch:
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t zlangbert/flux:latest-multiarch -f docker/Dockerfile.build . --push
+	docker buildx build --platform linux/arm64 -t zlangbert/flux:latest-multiarch -f docker/Dockerfile.build . --push

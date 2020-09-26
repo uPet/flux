@@ -28,7 +28,7 @@ jobs:
       - name: Run Buildx
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/arm64 \
             --tag "upetco/flux" \
             --file docker/Dockerfile.build . \
             --push
