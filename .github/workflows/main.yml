@@ -11,11 +11,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
+      - name: Config Buildx
+        uses: crazy-max/ghaction-docker-buildx@v3.3.0
+
+      - name: Config Builder
+        run: docker buildx create --name mbuilder && docker buildx use mbuilder
 
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
