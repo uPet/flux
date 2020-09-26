@@ -195,3 +195,6 @@ docs-deps:
 
 serve-docs: docs-deps
 	mkdocs serve
+
+build/image/multiarch:
+	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t zlangbert/flux:latest-multiarch -f docker/Dockerfile.build . --push
