@@ -29,6 +29,6 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/arm64 \
-            --tag "upetco/flux" \
+            --tag "upetco/flux:gh-2" \
             --file docker/Dockerfile.build . \
             --push
